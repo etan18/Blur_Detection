@@ -22,7 +22,7 @@ args = vars(ap.parse_args())
 	text = "Not Blurry"
 	# if the focus measure is less than the supplied threshold,
 	# then the image should be considered "blurry"
-	if fm < args["threshold"]:
+	if fm < threshold:
 		text = "Blurry"
 	# show the image
 	cv2.putText(image, "{}: {:.2f}".format(text, fm), (10, 30),
