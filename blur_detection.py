@@ -9,7 +9,7 @@ def variance_of_laplacian(image):
 	# compute the Laplacian of the image and then return the focus
 	# measure, which is simply the variance of the Laplacian
 	return cv2.Laplacian(image, cv2.CV_64F).var()
-        threshold=100; #might need to change
+        threshold=100 #might need to change
         #converts to gray
 	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         #variance of laplacian
