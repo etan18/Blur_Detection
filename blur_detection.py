@@ -1,13 +1,12 @@
 """
-Includes 2 of 3 functions needed to detect if input video is blurred
+Tells whether video input is in focus in real time
 """
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 from imutils import paths
 
-CAM = "/Users/ErinTan/Projects/SMI_Pupillometry/SMI_Pupilometry_Test.mp4"
-
+CAM = "/Users/ErinTan/Projects/SMI_Pupillometry/V1219_20850228_234726_Dilation2.mp4"
 def blur_output(bool_blur, int_blur):
     """Prints green window for not blurred, red for blurred plus numeral"""
      # Create black blank image
@@ -51,12 +50,12 @@ def blur_output(bool_blur, int_blur):
 
 if __name__ == "__main__":
     cap = cv2.VideoCapture(CAM)
+    cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
     while cap.isOpened():
         ret, capture = cap.read()
         # cv2.cvtColor(capture, frame, cv2.COLOR_BGR2GRAY)
         cv2.imshow('frame', capture)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-    #    blur_output(True, 8)q
     #    variance_of_laplacian(frame)
     cap.release()
