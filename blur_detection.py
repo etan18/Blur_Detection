@@ -2,11 +2,18 @@
 Tells whether video input is in focus in real time
 """
 import cv2
+import time
 import matplotlib.pyplot as plt
 import numpy as np
 from imutils import paths
+import ffmpeg_streaming
+import sys
+import imutils
+from imutils.video import FileVideoStream
+from imutils.video import FPS
 
-CAM = "/Users/ErinTan/Projects/SMI_Pupillometry/V1219_20850228_234726_Dilation2.mp4"
+# CAM = "/Users/ErinTan/Projects/SMI_Pupillometry/V1219_20850228_234726_Dilation2.mp4"
+
 def blur_output(bool_blur, int_blur):
     """Prints green window for not blurred, red for blurred plus numeral"""
      # Create black blank image
@@ -18,6 +25,7 @@ def blur_output(bool_blur, int_blur):
         image[:] = (0, 0, 255)
         print(int_blur)
 
+    cv2.namedWindow('light', cv2.WINDOW_AUTOSIZE)
     cv2.imshow('light', image)
     cv2.waitKey(0)
 
@@ -49,13 +57,20 @@ def blur_output(bool_blur, int_blur):
 #     return cv2.Laplacian(image, cv2.CV_64F).var()
 
 if __name__ == "__main__":
-    cap = cv2.VideoCapture(CAM)
-    cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
-    while cap.isOpened():
-        ret, capture = cap.read()
-        # cv2.cvtColor(capture, frame, cv2.COLOR_BGR2GRAY)
-        cv2.imshow('frame', capture)
+    fvs = FileVideoStream(1).start()
+    time.sleep(1)
+
+    fps = FPS().start()
+
+    while fvs.more():
+        frame = fvs.read()
+        frame = imutils.resize(frame, width=450)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        frame = np.dstack([frame, frame, frame])
+        cv2.imshow("Frame", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-    #    variance_of_laplacian(frame)
-    cap.release()
+        fps.update()
+
+    cv2.destroyAllWindows()
+    fvs.stop()
