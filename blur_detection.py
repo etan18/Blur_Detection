@@ -10,7 +10,7 @@ from imutils.video import FileVideoStream
 from imutils.video import FPS
 
 # CAM = "/Users/ErinTan/Projects/SMI_Pupillometry/V1219_20850228_234726_Dilation2.mp4"
-Threshold=100 #notime
+Threshold=200 #notime
 
 #images and threshold for how blurry is really blurry
 #sepereate main function?
