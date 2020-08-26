@@ -1,7 +1,7 @@
 import cv2
 import time
 
-Threshold=100 #notime
+Threshold=200 #notime
 
 
 #images and threshold for how blurry is really blurry
@@ -19,7 +19,7 @@ start = time.time()
     #might need to change, put in beginning of code/before function
         #converts to gray
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-#small = cv2.resize(gray, (0,0), fx=0.5, fy=0.5)
+small = cv2.resize(gray, (0,0), fx=0.5, fy=0.5)
 
  #let erin handle this?? **
         #variance of laplacian
@@ -29,7 +29,7 @@ gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 #CONTOURS= SLOW.
 #resize+make threshold lower or crop out (u can control during data collectio)
 #code that finds estimated circles???
-bluriness = cv2.Laplacian(gray, cv2.CV_64F).var()
+bluriness = cv2.Laplacian(small, cv2.CV_64F).var()
 
 blurry = 0
         # if the focus measure is less than the supplied threshold,
@@ -46,8 +46,10 @@ print(end-start)
 #put text on after this function (return the stuff)
 if blurry==1:
     text="Blurry"
+
 if blurry==0:
     text="Not Blurry"
+text+=bluriness
 cv2.putText(gray, "{}: {:.2f}".format(text, bluriness), (10, 30),
     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 3)
 
