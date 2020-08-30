@@ -1,5 +1,8 @@
 import cv2
 import time
+import numpy
+
+
 
 Threshold=200 #notime
 
@@ -19,7 +22,13 @@ start = time.time()
     #might need to change, put in beginning of code/before function
         #converts to gray
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-small = cv2.resize(gray, (0,0), fx=0.5, fy=0.5)
+height, width=gray.shape
+x=int(height/5)
+y=int(width/5)
+croppedImage = gray[x:height-x, y:width-y]
+
+#alsocanbechanged
+small = cv2.resize(croppedImage, (0,0), fx=0.5, fy=0.5)
 
  #let erin handle this?? **
         #variance of laplacian
@@ -45,10 +54,10 @@ print(end-start)
                 # show the image
 #put text on after this function (return the stuff)
 
-cv2.putText(gray, "{}: {:.2f}".format(text, bluriness), (10, 30),
+cv2.putText(croppedImage, "{}: {:.2f}".format(text, bluriness), (10, 30),
     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 3)
 
-cv2.imshow("Image", gray)
+cv2.imshow("Image", croppedImage)
 key = cv2.waitKey(0)
     #return bluriness
         #`how long does this take to do
