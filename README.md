@@ -7,4 +7,5 @@ Stream webcam/VR headset data, check if video is in focus and return a value for
 - ffmpeg-python (optional module to improve stream speed)
 
 ## Instructions
-Set string constant CAM to camera IP URL or video address
+Open code and change path to location of video
+- Video should be of just one eye
