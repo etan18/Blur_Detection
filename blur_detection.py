@@ -33,6 +33,7 @@ def variance_of_laplacian(image):
 
 if __name__ == "__main__":
     #path to video stream
+    #change
     path = r'C:\Users\prashanthi\GitHub\Blur_Detection\HalfOpen_LookingAround.mp4'
     stream = cv2.VideoCapture(path)
     fvs = FileVideoStream(path).start()
