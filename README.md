@@ -5,8 +5,11 @@ Stream webcam/VR headset data, check if video is in focus and return a value for
 - Python 3.7.4
 - OpenCV 4.1.1
 - ffmpeg-python (optional module to improve stream speed)
+- FPS from imutils.video
+- FileVideoStream from imutils.video
 
 ## Instructions
 Open code and change path to location of video
 - Video should be of just one eye
-Run code
+
+Run code 
