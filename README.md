@@ -9,3 +9,4 @@ Stream webcam/VR headset data, check if video is in focus and return a value for
 ## Instructions
 Open code and change path to location of video
 - Video should be of just one eye
+Run code
