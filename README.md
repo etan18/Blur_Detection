@@ -17,7 +17,7 @@ pip install imutils
 Open code and change variable PATH (line 10) to location of video
 - Video should be of just one eye
 
-![Pupil Camera](/Users/ErinTan/Downloads/Screen Shot 2020-09-01 at 2.16.09 PM.png)
+![Pupil](Images/Demo.png)
 
 ##### For Testing Purposes
 To access user laptop webcam, set
