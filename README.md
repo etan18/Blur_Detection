@@ -30,6 +30,8 @@ PATH = 1
 cd Path/to/Blur/Detection
 ```
 3. Use python (or python3) command to run blur_detection.py
+- To run a specific .mp4 file or webcam, add argument with video address
+- If no argument is added, the default is laptop webcam
 ```
-python blur_detection.py
+python blur_detection.py [optional video path]
 ```
