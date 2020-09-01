@@ -1,5 +1,9 @@
 '''
 To be used as a real-time tool for determining if camera input is blurry
+
+Created by Erin Tan and Aneesha Kodati as part of the 2020 MCA Mentorship
+Program, in collaboration with the Integrative Human Physiology Lab of Rutgers
+New Jersey Medical School
 '''
 import cv2
 import numpy
@@ -24,7 +28,7 @@ if __name__ == "__main__":
     if(len(sys.argv) > 1):
         PATH = sys.argv[1]
     else:
-        PATH = 1
+        PATH = 1 # default webcam
 
     fvs = FileVideoStream(PATH).start()
     fps = FPS().start()
@@ -34,9 +38,9 @@ if __name__ == "__main__":
         frame = fvs.read()
         if frame.all() is not None:
             frame = imutils.resize(frame, width=450)
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        frame = numpy.dstack([frame, frame, frame])
-        boolean, blurriness = variance_of_laplacian(frame)
+            gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # frame = numpy.dstack([frame, frame, frame])
+        boolean, blurriness = variance_of_laplacian(gray_frame)
         if not boolean:
             TEXT = "Not blurry, press q to quit\n"
             cv2.putText(frame, "{}: {:.2f}".format(TEXT, blurriness), (10, 30),
