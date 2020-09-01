@@ -4,12 +4,11 @@ To be used as a real-time tool for determining if camera input is blurry
 import cv2
 import numpy
 import imutils
+import sys
 from imutils.video import FPS
 from imutils.video import FileVideoStream
 
-# PATH = r'C:\Users\prashanthi\GitHub\Blur_Detection\HalfOpen_LookingAround.mp4'
-PATH = 1
-THRESHOLD = 100
+THRESHOLD = 300
 
 def variance_of_laplacian(gray_image):
     '''returns bool True if blurry and associated blurriness factor'''
@@ -22,8 +21,12 @@ def variance_of_laplacian(gray_image):
     return blurry, blur_num
 
 if __name__ == "__main__":
-    fvs = FileVideoStream(PATH).start()
+    if(len(sys.argv) > 1):
+        PATH = sys.argv[1]
+    else:
+        PATH = 1
 
+    fvs = FileVideoStream(PATH).start()
     fps = FPS().start()
 
     while fvs.more():
