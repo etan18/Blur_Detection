@@ -18,7 +18,7 @@ Open code and change variable PATH (line 10) to location of video
 - Video should be of just one eye
 
 ![Headset](Images/eye.png)
-![Pupil](Images/headset.png)
+![Pupil](Images/headset1.png)
 
 ##### For Testing Purposes
 To access user laptop webcam, set
