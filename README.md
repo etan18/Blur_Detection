@@ -21,10 +21,8 @@ Open code and change variable PATH (line 10) to location of video
 ![Pupil](Images/headset1.png)
 
 ##### For Testing Purposes
-To access user laptop webcam, set
-```
-PATH = 1
-```
+To change default webcam path, change variable PATH on line 31
+
 
 ## Run Code
 1. Open Command Line or Terminal Prompt
@@ -34,6 +32,10 @@ cd Path/to/Blur/Detection
 ```
 3. Use python (or python3) command to run blur_detection.py
 - To run a specific .mp4 file or webcam, add argument with video address
+  - To check for available cameras
+  ```
+  system_profiler SPCameraDataType
+  ```
 - If no argument is added, the default is laptop webcam
 ```
 python blur_detection.py [optional video path]
