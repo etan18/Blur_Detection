@@ -2,7 +2,7 @@
 Stream webcam/pupillometry headset data, check if video is in focus and
 return a value for how blurry it is.
 
-Created by Erin Tan and Aneesha Kodati as part of the 2020 MCA Mentorship Program, in collaboration with the Integrative Human Physiology Lab of Rutgers New Jersey Medical School
+Created by Erin Tan and Aneesha Kodati as part of the 2020 Middlesex County Academy Mentorship Program, in collaboration with the Integrative Human Physiology Lab of Rutgers New Jersey Medical School
 
 ## Software Setup
 - Python 3.7.4
