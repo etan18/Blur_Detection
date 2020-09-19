@@ -4,7 +4,8 @@ return a value for how blurry it is.
 
 Created by Erin Tan and Aneesha Kodati as part of the Summer 2020 Middlesex County Academy, Edison, New Jersey, USA Mentorship Program, in collaboration with the Integrative Human Physiology Lab of the Department of Pharmacology, Physiology, and Neuroscience, Rutgers Biomedical Health and Sciences, Newark, New Jersey, USA, and Dr. Komisaruk's Lab of the Department of Psychology, Rutgers University, Newark, New Jersey, USA
 
-Please use the following as citation: Tan, Erin & Kodati, Aneesha, Blur_Detection, (2020), GitHib repository, https://github.com/etan18/Blur_Detection.
+Please use the following as citation: 
+Tan, Erin & Kodati, Aneesha, Blur_Detection, (2020), GitHib repository, https://github.com/etan18/Blur_Detection.
 
 ## Software Setup
 - Python 3.7.4
@@ -16,7 +17,10 @@ pip install imutils
 ```
 
 ## Instructions
-Open "blur_detection.py"   
+Open 
+```
+blur_detection.py
+```
 - Video should be of just one eye
 
 ![Headset](Images/eye.png)
