@@ -50,6 +50,7 @@ if __name__ == "__main__":
             cv2.putText(frame, "{}: {:.2f}".format(TEXT, blurriness), (10, 30),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 3)
         cv2.imshow("Frame", frame)
+        print(blurriness)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
         fps.update()
