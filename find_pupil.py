@@ -83,7 +83,12 @@ def pupil_contour(img, threshold, debug=1):
     #for this image
     #print(threshold)
     contours, _ = cv2.findContours(thresh_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    best_contour = np.empty(contours[1].shape) #Empty Contour
+
+
+    if len(contours) == 1 :
+        best_contour = np.empty(contours[0].shape) #Empty Contour
+    else:
+        best_contour = np.empty(contours[1].shape) #Empty Contour
     for contour in contours:
         area = cv2.contourArea(contour)
         if PUPIL_MAX > area > PUPIL_MIN:
@@ -108,7 +113,10 @@ def pupil_contour(img, threshold, debug=1):
 
     # pylint: disable=R1715
     if contour_candidates == []: #if nothing found
-        return np.empty(contours[1].shape)
+        if len(contours) > 1:
+            return np.empty(contours[1].shape)
+        else:
+            return np.empty(contours[0].shape)
     else:
         #get best candidate (top circularity for now)
         sorted_contour_candidates = sorted(contour_candidates, \
