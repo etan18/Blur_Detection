@@ -42,11 +42,11 @@ if __name__ == "__main__":
         # frame = numpy.dstack([frame, frame, frame])
         boolean, blurriness = variance_of_laplacian(gray_frame)
         if not boolean:
-            TEXT = "Not blurry, press q to quit\n"
+            TEXT = "SHARP Score: \n"
             cv2.putText(frame, "{}: {:.2f}".format(TEXT, blurriness), (10, 30),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 3)
         else:
-            TEXT = "Blurry, press q to quit\n"
+            TEXT = "SHARP Score: \n"
             cv2.putText(frame, "{}: {:.2f}".format(TEXT, blurriness), (10, 30),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 3)
         cv2.imshow("Frame", frame)
