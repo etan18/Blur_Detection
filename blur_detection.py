@@ -19,10 +19,10 @@ def variance_of_laplacian(gray_image):
 
     small = cv2.resize(gray_image, (0, 0), fx=0.5, fy=0.5)
     blur_num = cv2.Laplacian(small, cv2.CV_64F).var()
-    blurry = False
+    isBlurry = False
     if blur_num < THRESHOLD:
-        blurry = True
-    return blurry, blur_num
+        isBlurry = True
+    return isBlurry, blur_num
 
 if __name__ == "__main__":
     if(len(sys.argv) > 1):

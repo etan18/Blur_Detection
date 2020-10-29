@@ -13,6 +13,7 @@ import math
 import cv2
 import matplotlib.pyplot as plt
 from find_pupil import pupillometry
+from blur_detection import variance_of_laplacian
 import numpy
 #text
 FONT = cv2.FONT_HERSHEY_SIMPLEX
@@ -157,6 +158,9 @@ def main(frame=-1, filename=DEFAULT_FILE_NAME):
 
 
             image_edit, rads, radius = pupillometry(frame, debug)
+            gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            boolean, blurriness = variance_of_laplacian(gray_frame)
+            print("SHARP SCORE: ",blurriness)
 
             display_main(frame, cap)
             display_left(image_edit)
