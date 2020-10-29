@@ -14,7 +14,6 @@ import cv2
 import matplotlib.pyplot as plt
 from find_pupil import pupillometry
 import numpy
-import pandas as pd
 #text
 FONT = cv2.FONT_HERSHEY_SIMPLEX
 SMI_DIM = (720, 480) # Dimension from SMI System
@@ -83,6 +82,17 @@ def display_main(frame, cap):
     cv2.imshow('Frame', resized_frame)
     #cv2.waitKey(0)
 
+def display_left(left):
+    """ Display the Left Eye"""
+    resized_left = resize_with_aspect_ratio(left, width=640) #Resize by\
+    # pylint: disable=C0103
+    L_STRING = "Left"
+    cv2.putText(resized_left, L_STRING, (0, 20), FONT, 0.8, (0, 255, 0), 2, cv2.LINE_AA)
+    cv2.imshow('Left Eye', resized_left)
+    #cv2.waitKey(0)
+    # resized_frame = ResizeWithAspectRatio(frame, height = 480)
+
+
 def best_fit(rads, radius):
     fitted = numpy.polyfit(rads, radius, 7)
     #print('best fit: ', fitted)
@@ -146,9 +156,10 @@ def main(frame=-1, filename=DEFAULT_FILE_NAME):
                     cv2.imwrite("frame.bmp", frame)
 
 
-            _, rads, radius = pupillometry(frame, debug)
+            image_edit, rads, radius = pupillometry(frame, debug)
 
             display_main(frame, cap)
+            display_left(image_edit)
             try:
                 best_fit(rads, radius)
             except numpy.linalg.LinAlgError as er:
