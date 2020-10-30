@@ -12,9 +12,10 @@ import sys
 import math
 import cv2
 import matplotlib.pyplot as plt
+import numpy
 from find_pupil import pupillometry
 from blur_detection import variance_of_laplacian
-import numpy
+
 #text
 FONT = cv2.FONT_HERSHEY_SIMPLEX
 SMI_DIM = (720, 480) # Dimension from SMI System
@@ -93,21 +94,22 @@ def display_left(left):
     #cv2.waitKey(0)
     # resized_frame = ResizeWithAspectRatio(frame, height = 480)
 
-
+# returns the R value of the polyfit to the data
 def best_fit(rads, radius):
     fitted = numpy.polyfit(rads, radius, 7)
     #print('best fit: ', fitted)
-    differences=[]
-    temp=0
+    differences = []
+    temp = 0
     plot_radial_perimeter(rads, radius, fitted)
     for x in range(0, len(radius)):
-        polyval=(fitted[0]*numpy.power(rads[x], 7))+(fitted[1]*numpy.power(rads[x], 6))+(fitted[2]*numpy.power(rads[x], 5))+(fitted[3]*numpy.power(rads[x], 4))+(fitted[4]*numpy.power(rads[x], 3))+(fitted[5]*rads[x]**2)+(fitted[6]*rads[x])+(fitted[4])
+        polyval = (fitted[0]*numpy.power(rads[x], 7))+(fitted[1]*numpy.power(rads[x], 6))+(fitted[2]*numpy.power(rads[x], 5))+(fitted[3]*numpy.power(rads[x], 4))+(fitted[4]*numpy.power(rads[x], 3))+(fitted[5]*rads[x]**2)+(fitted[6]*rads[x])+(fitted[4])
         differences.append(x-polyval)
     for x in differences:
         temp += x**2
         temp /= len(differences)
-    temp = math.sqrt(temp)
-    print(temp)
+    R = math.sqrt(temp)
+    print(R)
+    return R
     #print(fitted)
 
 def main(frame=-1, filename=DEFAULT_FILE_NAME):
@@ -137,6 +139,11 @@ def main(frame=-1, filename=DEFAULT_FILE_NAME):
     if not cap.isOpened():
         print("Error opening video stream or file")
     #   Read until video is completed
+
+    #start a csv file
+    csvdata = open('sharp_and_polyfit_data'+'.csv', "w")
+    csvdata.write('frame,sharp,polyfit_variance\n')
+
     while cap.isOpened():
       # Capture frame-by-frame
         if int(framenum) != -1:
@@ -160,14 +167,17 @@ def main(frame=-1, filename=DEFAULT_FILE_NAME):
             image_edit, rads, radius = pupillometry(frame, debug)
             gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             boolean, blurriness = variance_of_laplacian(gray_frame)
-            print("SHARP SCORE: ",blurriness)
+            print("SHARP SCORE: ", blurriness)
 
             display_main(frame, cap)
             display_left(image_edit)
+            frame_position = cap.get(cv2.CAP_PROP_POS_FRAMES)
             try:
-                best_fit(rads, radius)
+                R = best_fit(rads, radius)
+                csvdata.write(str(frame_position)+','+str(blurriness)+','+str(R)+'\n')
             except numpy.linalg.LinAlgError as er:
                 print('skip')
+                csvdata.write(str(frame_position)+','+str(blurriness)+','+'none'+'\n')
 
             # Press Q on keyboard to  exit
             if cv2.waitKey(1) & 0xFF == ord('q'):
