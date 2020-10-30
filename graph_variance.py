@@ -24,6 +24,7 @@ DEFAULT_FILE_NAME = '/Users/ErinTan/Downloads/pupil_clip1.mp4'
 
 def plot_radial_perimeter(rads, radius, fitted):
     """plots radians over radius for the left and right eye"""
+    plt.figure(1)
     # plt.subplot(121)
     plt.clf()
     # plt.subplot(121)
@@ -33,21 +34,21 @@ def plot_radial_perimeter(rads, radius, fitted):
     plt.ylabel('radius (pixels)')
     plt.xlabel('angle (radians)')
 
-    x = numpy.arange(min(rads).astype(int), max(rads).astype(int), 0.1)
+    x = numpy.arange(min(rads), max(rads), 0.01)
     y = numpy.asarray([eval_fitted(fitted, x_num) for x_num in x])
     plt.plot(x, y)
     plt.show()
     plt.pause(0.05)
 
 def eval_fitted(fitted, x):
-    x7 = fitted[0] * (x**7)
-    x6 = fitted[1] * (x**6)
-    x5 = fitted[2] * (x**5)
-    x4 = fitted[3] * (x**4)
-    x3 = fitted[4] * (x**3)
-    x2 = fitted[5] * (x**2)
-    x1 = fitted[6] * x
-    x0 = fitted[7]
+    x7  = fitted[0]  * (x**7)
+    x6  = fitted[1]  * (x**6)
+    x5  = fitted[2]  * (x**5)
+    x4  = fitted[3]  * (x**4)
+    x3  = fitted[4]  * (x**3)
+    x2  = fitted[5] * (x**2)
+    x1  = fitted[6] * x
+    x0  = fitted[7]
     return x7+x6+x5+x4+x3+x2+x1+x0
 
 
@@ -96,20 +97,37 @@ def display_left(left):
 
 # returns the R value of the polyfit to the data
 def best_fit(rads, radius):
+
+    #Normalizing
+    #radius_avg = numpy.mean(radius)
+    #radius = radius/radius_avg
+
     fitted = numpy.polyfit(rads, radius, 7)
     #print('best fit: ', fitted)
     differences = []
+    polyval_array = []
     temp = 0
-    plot_radial_perimeter(rads, radius, fitted)
+    #plot_radial_perimeter(rads, radius, fitted)
     for x in range(0, len(radius)):
-        polyval = (fitted[0]*numpy.power(rads[x], 7))+(fitted[1]*numpy.power(rads[x], 6))+(fitted[2]*numpy.power(rads[x], 5))+(fitted[3]*numpy.power(rads[x], 4))+(fitted[4]*numpy.power(rads[x], 3))+(fitted[5]*rads[x]**2)+(fitted[6]*rads[x])+(fitted[4])
-        differences.append(x-polyval)
+        polyval = eval_fitted(fitted, rads[x])
+        polyval_array.append(polyval)
+        differences.append(radius[x]-polyval)
+
+    if(False):
+        plt.figure(2)
+        plt.ion()
+        plt.clf()
+        plt.plot(rads,polyval_array, 'ro', marker=".", markersize=5)
+        plt.plot(rads,radius, 'bo', marker=".", markersize=5)
+        plt.show()
+        plt.pause(0.05)
+
     for x in differences:
         temp += x**2
     temp /= len(differences)
-    R = math.sqrt(temp)
-    print(R)
-    return R
+    RMS = math.sqrt(temp)
+    print(RMS)
+    return RMS
     #print(fitted)
 
 def main(frame=-1, filename=DEFAULT_FILE_NAME):
@@ -144,6 +162,9 @@ def main(frame=-1, filename=DEFAULT_FILE_NAME):
     csvdata = open('sharp_and_polyfit_data'+'.csv', "w")
     csvdata.write('frame,sharp,polyfit_variance\n')
 
+    blurriness_array = []
+    R_array = []
+
     while cap.isOpened():
       # Capture frame-by-frame
         if int(framenum) != -1:
@@ -163,6 +184,7 @@ def main(frame=-1, filename=DEFAULT_FILE_NAME):
                     is_before_first = False
                     cv2.imwrite("frame.bmp", frame)
 
+            frame = frame[90:380,150:500] #Zoom in on the pupil
 
             image_edit, rads, radius = pupillometry(frame, debug)
             gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -175,6 +197,8 @@ def main(frame=-1, filename=DEFAULT_FILE_NAME):
             try:
                 R = best_fit(rads, radius)
                 csvdata.write(str(frame_position)+','+str(blurriness)+','+str(R)+'\n')
+                R_array.append(R)
+                blurriness_array.append(blurriness)
             except numpy.linalg.LinAlgError as er:
                 print('skip')
                 csvdata.write(str(frame_position)+','+str(blurriness)+','+'none'+'\n')
@@ -195,6 +219,10 @@ def main(frame=-1, filename=DEFAULT_FILE_NAME):
 
     # Closes all the frames
     cv2.destroyAllWindows()
+    plt.figure(3)
+    plt.plot(blurriness_array,R_array, 'ro', marker=".", markersize=5)
+    plt.show()
+    input("Press Enter to continue...")
 
 if __name__ == "__main__":
     print(len(sys.argv))

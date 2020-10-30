@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 INIT_THRESH = 50#150 #Initial Threshold Value
 PUPIL_MIN = 600
-PUPIL_MAX = 600000
+PUPIL_MAX = 60000
 DEFAULT_FILE_NAME = "right.bmp"
 #text
 FONT = cv2.FONT_HERSHEY_SIMPLEX
@@ -106,7 +106,7 @@ def pupil_contour(img, threshold, debug=1):
                 print("Contour Area = ", cv2.contourArea(contour))
                 cv2.waitKey(0)
 
-            if circularity > 0.80:
+            if circularity > 0.40:
                 contour_candidates.append({'Circularity': circularity, 'Contour': contour})
 
     # pylint: disable=R1715
@@ -122,6 +122,7 @@ def pupil_contour(img, threshold, debug=1):
         #print(contour_candidates)
         best_contour = sorted_contour_candidates[0]["Contour"]
         #print(best_contour)
+        print('area'+str(cv2.contourArea(best_contour)))
         return best_contour
 
 #Pupillometry
