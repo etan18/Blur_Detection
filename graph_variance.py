@@ -11,6 +11,9 @@ and assigns a timestamp based on the night owel clock.
 import sys
 import math
 import cv2
+
+from scipy import stats
+import scipy
 import matplotlib.pyplot as plt
 import numpy
 from find_pupil import pupillometry
@@ -122,12 +125,9 @@ def best_fit(rads, radius):
         plt.show()
         plt.pause(0.05)
 
-    for x in differences:
-        temp += x**2
-    temp /= len(differences)
-    RMS = math.sqrt(temp)
-    print(RMS)
-    return RMS
+    slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(radius,polyval_array)
+
+    return r_value**2
     #print(fitted)
 
 def main(frame=-1, filename=DEFAULT_FILE_NAME):
@@ -221,8 +221,11 @@ def main(frame=-1, filename=DEFAULT_FILE_NAME):
     cv2.destroyAllWindows()
     plt.figure(3)
     plt.plot(blurriness_array,R_array, 'ro', marker=".", markersize=5)
+    plt.ylabel('R-squared of poly fit')
+    plt.xlabel('SHARP Score')
     plt.show()
     input("Press Enter to continue...")
+
 
 if __name__ == "__main__":
     print(len(sys.argv))
