@@ -106,7 +106,7 @@ def best_fit(rads, radius):
         differences.append(x-polyval)
     for x in differences:
         temp += x**2
-        temp /= len(differences)
+    temp /= len(differences)
     R = math.sqrt(temp)
     print(R)
     return R
